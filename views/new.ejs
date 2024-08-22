@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <form method="POST" action="/listings/new">
+        <label for="petName">Pet Name:</label>
+        <input type="text" id="petName" name="petName" placeholder="Enter pet's name" required>
+        <br><br>
+        <label for="petAge">Age:</label>
+        <input type="number" id="petAge" name="petAge" placeholder="Enter pet's age in years" required>
+        <br><br>
+        <label for="petLocation">Location:</label>
+        <input type="text" id="petLocation" name="petLocation" placeholder="Enter location (City, State)" required>
+        <br><br>
+        <label for="petImage">Upload Image:</label>
+        <input type="text" id="petImage" name="petImage" accept="image/*" >
+        <br><br>
+        <label for="petDescription">Description:</label>
+        <textarea id="petDescription" name="petDescription" placeholder="Enter a brief description of the pet" rows="4" required></textarea>
+<br><br>
+        <button>Submit</button>
+        
+
+        </div>
+    </form>
+    
+</body>
+</html>

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pet Adoption & Care Platform</title>
+    <link rel="stylesheet" href="web.css">
+    <style>
+        /* Additional styles for the Jitsi Meet iframe */
+        #meetContainer {
+            width: 100%;
+            height: 600px;
+            margin: 20px 0;
+        }
+        .end-meeting-btn,
+        .start-meeting-btn,
+        .join-meeting-btn {
+            margin: 10px 0;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .end-meeting-btn {
+            background-color: #e74c3c;
+            color: white;
+        }
+        .start-meeting-btn {
+            background-color: #2ecc71;
+            color: white;
+        }
+        .join-meeting-btn {
+            background-color: #3498db;
+            color: white;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <a href="#" class="logo">PetAdopt</a>
+            <nav>
+                <ul>
+                    <li><a href="#adoption-listings">Adoption Listings</a></li>
+                    <li><a href="#pet-care-guides">Pet Care Guides</a></li>
+                    <li><a href="#marketplace">Marketplace</a></li>
+                    <li><a href="#about-us">About Us</a></li>
+                </ul>
+            </nav>
+            <div class="search-bar">
+                <input type="text" placeholder="Search...">
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="hero">
+        <div class="hero-content">
+            <h1>Find Your New Best Friend Today</h1>
+            <a href="#adoption-listings" class="btn">Browse Pets</a>
+        </div>
+    </section>
+
+    <!-- Adoption Listings Section -->
+    <section id="adoption-listings" class="container">
+        <h2>Adoption Listings</h2>
+        <div class="filters">
+            <input type="text" placeholder="Search by breed, species...">
+            <select>
+                <option value="location">Location</option>
+                <option value="age">Age</option>
+                <option value="size">Size</option>
+            </select>
+        </div>
+        <div class="pet-list">
+            <!-- Pet Item Example -->
+            <div class="pet-item">
+                <img src="https://cdn.pixabay.com/photo/2016/02/18/18/37/puppy-1207816_1280.jpg" alt="Golden Retriever">
+                <div class="pet-info">
+                    <h3>Golden Retriever</h3>
+                    <p>Age: 2 years | Location: New York, NY</p>
+                    <a href="#" class="btn">View Details</a>
+                    <button class="btn-secondary meet-virtually-btn">Meet Virtually</button>
+                    <button class="btn-secondary join-meeting-btn hidden">Join Meeting</button>
+                </div>
+            </div>
+            <!-- Add more pet items similarly -->
+        </div>
+    </section>
+
+    <!-- Virtual Meeting Section -->
+    <section id="virtual-meet" class="container">
+        <h2>Meet Your Future Pet Virtually</h2>
+        <div id="meetContainer"></div>
+        <button id="endMeeting" class="end-meeting-btn hidden">End Meeting</button>
+        <button id="startMeeting" class="start-meeting-btn hidden">Start Meeting</button>
+        <button id="joinMeeting" class="join-meeting-btn hidden">Join Meeting</button>
+        <script src='https://meet.jit.si/external_api.js'></script>
+        <script>
+            const domain = 'meet.jit.si';
+            let api = null;
+            let roomName = 'PetAdoptMeetingRoom'; // Default room name, can be unique per pet
+
+            function startMeeting() {
+                const options = {
+                    roomName: roomName,
+                    width: '100%',
+                    height: '600px',
+                    parentNode: document.querySelector('#meetContainer')
+                };
+                api = new JitsiMeetExternalAPI(domain, options);
+
+                document.getElementById('endMeeting').classList.remove('hidden');
+                document.getElementById('startMeeting').classList.add('hidden');
+                document.getElementById('joinMeeting').classList.add('hidden');
+            }
+
+            function endMeeting() {
+                if (api) {
+                    api.dispose();
+                    api = null;
+                }
+                document.getElementById('endMeeting').classList.add('hidden');
+                document.getElementById('startMeeting').classList.remove('hidden');
+                document.getElementById('joinMeeting').classList.remove('hidden');
+            }
+
+            function joinMeeting() {
+                startMeeting(); // Or set a unique room name if different
+            }
+
+            document.querySelectorAll('.meet-virtually-btn').forEach(button => {
+                button.addEventListener('click', () => {
+                    startMeeting();
+                    document.querySelectorAll('.join-meeting-btn').forEach(joinBtn => joinBtn.classList.remove('hidden'));
+                });
+            });
+
+            document.getElementById('endMeeting').addEventListener('click', endMeeting);
+            document.getElementById('startMeeting').addEventListener('click', startMeeting);
+            document.getElementById('joinMeeting').addEventListener('click', joinMeeting);
+        </script>
+    </section>
+
+    <!-- Pet Care Guides Section -->
+    <section id="pet-care-guides" class="container">
+        <h2>Pet Care Guides</h2>
+        <div class="guide-list">
+            <div class="guide-item">
+                <img src="https://www.barclondon.com/cdn/shop/articles/dog-nutrition-chart.png?crop=center&height=623&v=1656392758&width=1024" alt="Nutrition">
+                <h3>Nutrition</h3>
+                <p>Learn how to feed your pet properly.</p>
+                <a href="#" class="btn">Read More</a>
+            </div>
+            <!-- Add more guide items similarly -->
+        </div>
+    </section>
+
+    <!-- Marketplace Section -->
+    <section id="marketplace" class="container">
+        <h2>Pet Care Marketplace</h2>
+        <div class="service-list">
+            <div class="service-item">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyyt34FsfItQhO8mYIuHtUVt0soe8fmxNi_w&s" alt="Pet Sitter">
+                <h3>Pet Sitter</h3>
+                <p>Find a reliable pet sitter in your area.</p>
+                <a href="#" class="btn">Book Now</a>
+            </div>
+            <!-- Add more service items similarly -->
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-links">
+                <a href="#">About Us</a>
+                <a href="#">Contact</a>
+                <a href="#">Privacy Policy</a>
+            </div>
+            <div class="social-media">
+                <a href="#"><img src="images/facebook-icon.png" alt="Facebook"></a>
+                <a href="#"><img src="images/twitter-icon.png" alt="Twitter"></a>
+                <a href="#"><img src="images/instagram-icon.png" alt="Instagram"></a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/scripts.js"></script>
+</body>
+</html>
