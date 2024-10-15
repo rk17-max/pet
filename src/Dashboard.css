@@ -1,0 +1,82 @@
+.dashboard {
+    padding: 20px;
+    text-align: center;
+    background-color: #f9f9f9; /* Light background */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    max-width: 800px; /* Max width for the dashboard */
+    margin: auto; /* Center the dashboard */
+}
+.username{
+    color: black;
+}
+.chat-link {
+    display: inline-block;
+    margin: 10px 0;
+    padding: 10px 20px;
+    background-color: #007bff; /* Button color */
+    color: white;
+    text-decoration: none;
+    border-radius: 5px; /* Rounded button */
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transitions */
+}
+
+.chat-link:hover {
+    background-color: #0056b3; /* Darker on hover */
+    transform: scale(1.05); /* Slightly scale on hover */
+}
+
+.file-list {
+    list-style: none; /* Remove default list style */
+    padding: 0; /* Remove padding */
+    margin: 20px 0; /* Add margin to separate from other elements */
+}
+
+.file-list li {
+    padding: 15px; /* Increased padding for comfort */
+    background: #fff; /* White background for list items */
+    border-radius: 5px; /* Rounded corners */
+    margin: 10px 0; /* Spacing between items */
+    transition: transform 0.2s, box-shadow 0.2s; /* Smooth transition */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+.file-list li:hover {
+    transform: scale(1.03); /* Slightly scale up on hover */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Stronger shadow on hover */
+}
+
+.fade-enter {
+    opacity: 0;
+    transform: translateY(-10px); /* Start slightly above */
+}
+
+.fade-enter-active {
+    opacity: 1;
+    transform: translateY(0); /* Move to original position */
+    transition: opacity 500ms, transform 500ms; /* Transition for fade */
+}
+
+.fade-exit {
+    opacity: 1;
+}
+
+.fade-exit-active {
+    opacity: 0;
+    transition: opacity 500ms; /* Transition for exit */
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+    .dashboard {
+        padding: 10px; /* Reduce padding on smaller screens */
+    }
+
+    .chat-link {
+        padding: 8px 16px; /* Adjust padding for buttons */
+    }
+
+    .file-list li {
+        padding: 10px; /* Adjust padding for list items */
+    }
+}

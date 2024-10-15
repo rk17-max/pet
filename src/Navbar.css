@@ -1,0 +1,34 @@
+/* Navbar.css */
+.navbar {
+    background-color: #333; /* Dark background color */
+    padding: 10px 20px; /* Padding around the navbar */
+  }
+  
+  .navbar-container {
+    display: flex;
+    justify-content: space-between; /* Space between logo and menu */
+    align-items: center; /* Center items vertically */
+  }
+  
+  .navbar-logo {
+    color: white; /* Logo text color */
+    font-size: 24px; /* Logo font size */
+    text-decoration: none; /* Remove underline */
+  }
+  
+  .navbar-menu {
+    list-style: none; /* Remove default list styling */
+    display: flex; /* Flexbox for menu items */
+  }
+  
+  .navbar-item {
+    color: white; /* Menu item color */
+    text-decoration: none; /* Remove underline */
+    margin: 0 15px; /* Space between menu items */
+    transition: color 0.3s; /* Smooth transition on hover */
+  }
+  
+  .navbar-item:hover {
+    color: #ff4d4d; /* Change color on hover */
+  }
+  

@@ -1,0 +1,63 @@
+.animation{
+    width: 610px;
+    height: 600px;
+    position: relative;
+    top: 190px;
+    white-space: nowrap;
+    overflow: auto;
+    left: 900px;
+
+
+    
+    
+    
+    
+}
+::-webkit-scrollbar{
+    display: none;
+}
+.animation img{
+    height: 600px;
+    width: 600px;
+
+}
+
+
+.animated-image{
+    position: relative;
+    animation: slide 8s ease-in-out infinite;
+    background: none;
+
+
+}
+
+@keyframes slide {
+    20%{
+        transform: translateX(-600px);
+    }50%{
+        transform: translateX(-1200px);
+    }80%{
+        transform: translateX(-1300px);
+
+    }100%{
+        transform: translateX(-600px);
+    }
+    
+    
+}
+
+  
+
+
+
+/* ===============css for hat animation ============== */
+
+.hatanimation{
+    position: relative;
+    height: 255px;
+    width: 250px;
+    left: 400px;
+    top: 100px;
+    z-index: 1;
+    transform: rotate(30deg);
+}

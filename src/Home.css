@@ -1,0 +1,41 @@
+.files-container {
+  margin-top: 20px;
+}
+
+.files-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Minimum width of 200px for each item */
+  gap: 15px; /* Space between items */
+  padding: 10px; /* Optional padding around the grid */
+}
+
+.file-item {
+  border: 1px solid #ccc; /* Border for each square */
+  border-radius: 8px; /* Rounded corners */
+  padding: 15px; /* Inner padding */
+  text-align: center; /* Center text */
+  background-color: #f9f9f9; /* Light background color */
+  transition: transform 0.2s, box-shadow 0.2s; /* Smooth transition on hover */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Light shadow for depth */
+}
+
+.file-item:hover {
+  transform: scale(1.05); /* Slightly enlarge on hover */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Deeper shadow on hover */
+}
+
+.delete-button {
+  margin-top: 15px; /* Space above the delete button */
+  background-color: #ff4d4d; /* Red background for delete button */
+  color: white; /* White text color */
+  border: none; /* Remove default border */
+  border-radius: 5px; /* Rounded corners */
+  padding: 8px 12px; /* Padding for button */
+  cursor: pointer; /* Pointer cursor on hover */
+  font-size: 14px; /* Slightly larger font size */
+  transition: background-color 0.3s; /* Smooth transition for background color */
+}
+
+.delete-button:hover {
+  background-color: #ff1a1a; /* Darker red on hover */
+}

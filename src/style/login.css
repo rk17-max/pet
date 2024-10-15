@@ -1,0 +1,118 @@
+.login{
+    display: flex;
+    background-color: #040f04;
+    width: 900px;
+    height: 600px;
+    margin: 0 auto;
+    margin-top: 10%;
+    align-items: center;
+    justify-content: center;
+    border-radius: 20px;
+    border: 1px solid black;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+   
+   
+}
+
+
+.sideimg{
+    flex:5;
+    border-top-left-radius:20px ;
+    border-bottom-left-radius: 20px;
+    border-radius: 20px;
+
+    display: flex;
+    height: 600px;
+    background-color: #ffc;
+
+    transform: rotate(8deg);
+}
+
+.sideimg p{
+    position: relative;
+    top: 80px;
+}
+.login form{
+    flex:6;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    top: 10px;
+   
+    gap: 20px;
+
+}
+body{
+    font-size: 13px;
+    background-color: #8ec5fc86;
+    background-image: linear-gradient(62deg, #8ec5fc51 0%, #e0c3fcb5 100%);
+}
+.university{
+    padding: 12px 25px;
+    width: 390px;
+    border-radius: 5px;
+    font-family: raleway;
+    font-size: 15px;
+}
+h1{
+    font-family: raleway;
+    font-size: 22px;
+    color: white; 
+    padding: 0;
+    margin: 0;
+    letter-spacing: 3px;
+}
+.login form input{
+    padding: 12px 20px;
+    width: 300px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-family: raleway;
+    font-size: 15px;
+    box-shadow: 0 4px 8px rgba(76, 76, 76, 0.873);
+
+}
+p{
+    color: white;
+    padding: none;
+    margin: 0;
+}
+
+.login button{
+    padding: 15px 20px;
+    width: 340px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fc8019;
+    font-family: raleway;
+    color: white;
+    font-size: 20px;
+    position: relative;
+    animation: scale 0.1 ease;
+    border: none;
+}
+
+.login button:focus{
+    scale: 0.98;
+}
+
+.login form a{
+    position: relative;
+    /* text-decoration: none    ; */
+    color: white;
+    text-decoration: underline;
+    font-size: 18px;
+}
+
+.logo{
+    width: 135px;
+}
+@media (max-width:600px){
+    .login{
+        height: 100vh;
+        width: 110%;
+        flex-direction: column;
+        position: relative;
+    }
+}
