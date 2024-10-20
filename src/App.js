@@ -6,12 +6,13 @@ import LoginForm from './component/Login';
 import SignupForm from './component/Signup';
 import Dashboard from './Dashboard';
 import UploadFiles from './UploadFiles';
-import Navbar from './Navbar'; // Import the Navbar component
+//import Navbar from './Navbar'; // Import the Navbar component
 import Chat from './Chat'; // Import the Chat component
 import FileDetails from './FileDetails'; // Import the FileDetails component
 import FileList from './FileList';
 import TestPDFPreview from './Pdftest'; // Import the PDF preview component
-
+import FolderComponent from './Folder'
+import Chatbot from './Chatbot';
 const App = () => {
   return (
     <UserProvider>
@@ -20,6 +21,9 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Home />} /> {/* Redirect to Home on root */}
           <Route path="/files/:id" element={<FileDetails />} />
+          
+          <Route path="/folder" element={<FolderComponent />} />
+          <Route path="/Chatbot" element={<Chatbot />} />
           <Route path="/details" element={<TestPDFPreview />} />
           <Route path="/home" element={<Home />} />
           <Route path="/login" element={<LoginForm />} />

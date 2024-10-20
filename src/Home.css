@@ -8,7 +8,9 @@
   gap: 15px; /* Space between items */
   padding: 10px; /* Optional padding around the grid */
 }
-
+.cd{
+  color: black;
+}
 .file-item {
   border: 1px solid #ccc; /* Border for each square */
   border-radius: 8px; /* Rounded corners */
@@ -38,4 +40,65 @@
 
 .delete-button:hover {
   background-color: #ff1a1a; /* Darker red on hover */
+}
+
+
+.search-container {
+  margin: 20px 0;
+}
+
+.search-input {
+  padding: 10px;
+  width: 100%;
+  max-width: 400px; /* Set a max width for the input */
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.files-container {
+  margin-top: 20px;
+}
+
+.files-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Responsive grid */
+  gap: 15px; /* Space between items */
+}
+
+.file-item {
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  transition: transform 0.2s;
+}
+
+.file-item:hover {
+  transform: scale(1.05); /* Scale on hover for effect */
+}
+
+.delete-button {
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.delete-button:hover {
+  background-color: #ff1a1a; /* Darker red on hover */
+}
+.thumbnail {
+  width: 100px; /* Adjust size as needed */
+  height: auto;
+  margin-bottom: 10px;
+}
+
+.t{
+  color: black;
+}
+.or{
+  color: black;
 }

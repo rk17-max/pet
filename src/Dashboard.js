@@ -2,10 +2,11 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom"; // Import navigate
 import UploadForm from "./UploadForm"; // Import your upload form component
-import { Link } from "react-router-dom"; // Import Link
+//import { Link } from "react-router-dom"; // Import Link
 import { CSSTransition, TransitionGroup } from "react-transition-group"; // Import for animations
 import "./Dashboard.css"; // Import your CSS styles
 import Navbar from './Navbar';
+import FolderComponent from './Folder'
 
 const Dashboard = () => {
     const [username, setUsername] = useState("");
@@ -69,6 +70,8 @@ const Dashboard = () => {
                 ))}
             </TransitionGroup>
         </div>
+        <FolderComponent/>
+
         </>
     );
 };

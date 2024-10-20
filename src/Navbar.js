@@ -1,13 +1,26 @@
 // Navbar.js
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './Navbar.css'; // Import your CSS file for styling
-
+import axios from 'axios';
 const Navbar = () => {
+  const navigate = useNavigate();
+  const handleLogout = async () => {
+    try {
+      const res = await axios.get("http://localhost:5000/logout", { withCredentials: true });
+      if (res.data.status) {
+        navigate("/login");
+      } else {
+        console.error("Logout failed:", res.data.message);
+      }
+    } catch (err) {
+      console.error("Error during logout:", err);
+    }
+  };
   return (
     <nav className="navbar">
       <div className="navbar-container">
-        <Link to="/" className="navbar-logo">My App</Link>
+        <Link to="/" className="navbar-logo">Solvebuddy</Link>
         <ul className="navbar-menu">
 
         <li>
@@ -23,6 +36,9 @@ const Navbar = () => {
           <li>
             <Link to="/about" className="navbar-item">About</Link>
           </li>
+          <button onClick={handleLogout}>
+           LogOut
+          </button>
           {/* Add more links as needed */}
         </ul>
       </div>

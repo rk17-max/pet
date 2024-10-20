@@ -2,41 +2,41 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 
+import Navbar from './Navbar';
+import StarRating from './StarRating';
 const FileDetails = () => {
     const { id } = useParams(); // Get the file ID from the URL
     const [file, setFile] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
-    const [users, setUsers] = useState({}); // State to store user data
+    const [users, setUsers] = useState({});
     const [rating, setRating] = useState(0);
     const [comment, setComment] = useState("");
+    const [collectionId, setCollectionId] = useState(""); // State to store collection ID
 
     useEffect(() => {
         const fetchFileDetails = async () => {
             try {
                 const response = await axios.get(`http://localhost:5000/files/${id}`, {
-                    withCredentials: true // Ensure credentials are sent
+                    withCredentials: true
                 });
                 setFile(response.data);
 
-                // Fetch user details for ratings
                 const userIds = response.data.ratings.map(rating => rating.user);
-                const uniqueUserIds = [...new Set(userIds)]; // Get unique user IDs
+                const uniqueUserIds = [...new Set(userIds)];
 
-                // Fetch user details in bulk
                 const userResponses = await Promise.all(
                     uniqueUserIds.map(userId =>
                         axios.get(`http://localhost:5000/users/${userId}`, {
-                            withCredentials: true // Ensure credentials are sent
+                            withCredentials: true
                         })
                     )
                 );
 
-                // Map user IDs to usernames
                 const usersMap = {};
                 userResponses.forEach(userResponse => {
                     const user = userResponse.data;
-                    usersMap[user._id] = user.username; // Assuming the user object has _id and username
+                    usersMap[user._id] = user.username;
                 });
                 setUsers(usersMap);
             } catch (err) {
@@ -51,27 +51,47 @@ const FileDetails = () => {
     }, [id]);
 
     const handleRatingSubmit = async (e) => {
-        e.preventDefault(); // Prevent form submission
+        e.preventDefault();
         try {
             const response = await axios.post(`http://localhost:5000/rate-file`, {
                 fileId: id,
                 rating,
                 comment,
             }, {
-                withCredentials: true // Ensure credentials are sent
+                withCredentials: true
             });
 
             console.log(response.data);
-            // Optionally, you could update the file state to include the new rating without fetching again
             setFile(prevFile => ({
                 ...prevFile,
-                ratings: [...prevFile.ratings, { user: "you", rating, comment }] // Adjust "you" as needed
+                ratings: [...prevFile.ratings, { user: "you", rating, comment }]
             }));
-            setRating(0); // Reset rating
-            setComment(""); // Reset comment
+            setRating(0);
+            setComment("");
         } catch (err) {
             console.error("Error submitting rating:", err);
             setError("Failed to submit rating. Please try again.");
+        }
+    };
+
+    const handleAddFileToCollection = async () => {
+        if (!collectionId) {
+            alert("Please select a collection ID."); // Simple validation
+            return;
+        }
+
+        try {
+            const response = await axios.post(`http://localhost:5000/folders/${collectionId}/add-file`, {
+                fileId: id
+            }, {
+                withCredentials: true
+            });
+
+            console.log(response.data);
+            alert(response.data.message); // Show success message
+        } catch (err) {
+            console.error("Error adding file to collection:", err);
+            setError("Failed to add file to collection. Please try again.");
         }
     };
 
@@ -88,6 +108,8 @@ const FileDetails = () => {
     }
 
     return (
+        <>
+        <Navbar/>
         <div>
             <h2>File Details</h2>
             <p><strong>Original Name:</strong> {file.originalName || "N/A"}</p>
@@ -110,16 +132,22 @@ const FileDetails = () => {
 
             {/* Display ratings with usernames */}
             {file.ratings && file.ratings.length > 0 ? (
-                <div>
-                    <h3>Ratings:</h3>
-                    <ul>
-                        {file.ratings.map((rating, index) => (
-                            <li key={index}>
-                                <strong>User:</strong> {users[rating.user] || "Unknown User"} - <strong>Rating:</strong> {rating.rating} - <strong>Comment:</strong> {rating.comment || "No comments"}
-                            </li>
-                        ))}
-                    </ul>
-                </div>
+               <div>
+               <h3>Ratings:</h3>
+               <ul>
+                 {file.ratings.length > 0 ? (
+                   file.ratings.map((rating, index) => (
+                     <li key={index} style={styles.ratingItem}>
+                       <strong>User:</strong> {users[rating.user] || "Unknown User"} - 
+                       <strong>Rating:</strong> <StarRating rating={rating.rating} /> - 
+                       <strong>Comment:</strong> {rating.comment || "No comments"}
+                     </li>
+                   ))
+                 ) : (
+                   <li>No ratings yet.</li>
+                 )}
+               </ul>
+             </div>
             ) : (
                 <p>No ratings yet.</p>
             )}
@@ -140,6 +168,7 @@ const FileDetails = () => {
                         />
                     </label>
                 </div>
+                
                 <div>
                     <label>
                         Comment:
@@ -153,9 +182,33 @@ const FileDetails = () => {
                 <button type="submit">Submit Rating</button>
             </form>
 
+            {/* Button to Add File to Collection */}
+            <div style={{ marginTop: '20px' }}>
+                <label>
+                    Select Collection name to add:
+                    <input
+                        type="text"
+                        value={collectionId}
+                        onChange={(e) => setCollectionId(e.target.value)}
+                        placeholder="Enter Collection name"
+                        required
+                    />
+                </label>
+                <button onClick={handleAddFileToCollection}>Add File to Collection</button>
+            </div>
+
             <a href={`http://localhost:5000/${file.url}`} download>Download File</a>
         </div>
+        </>
     );
 };
+const styles = {
+    ratingItem: {
+      marginBottom: '15px',
+      padding: '10px',
+      border: '1px solid #ddd',
+      borderRadius: '5px',
+    },
+  };
 
 export default FileDetails;
