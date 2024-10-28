@@ -1,109 +1,100 @@
 import React, { useState } from 'react';
+import { MessageSquare, Send } from 'lucide-react';
 import axios from 'axios';
-import './Chatbot.css'; // Import the CSS file for styling
 
 const Chatbot = () => {
-  const [questionType, setQuestionType] = useState(''); // State to manage question type
-  const [inputValue, setInputValue] = useState(''); // State for input value
-  const [placeholderText, setPlaceholderText] = useState('Enter your query'); // State for placeholder text
-  const [chatHistory, setChatHistory] = useState([]); // State to keep track of chat messages
+  const [isOpen, setIsOpen] = useState(false);
+  const [messages, setMessages] = useState([]);
+  const [inputMessage, setInputMessage] = useState('');
+  
+  const handleSend = async () => {
+    if (inputMessage.trim() === '') return;
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+    const userMessage = {
+      text: inputMessage,
+      sender: 'user',
+      timestamp: new Date().toLocaleTimeString()
+    };
 
-    // Check if questionType is set
-    if (!questionType) {
-      const errorMessage = 'Please select a question type before submitting.';
-      setChatHistory((prevHistory) => [...prevHistory, `Bot: ${errorMessage}`]); // Add error message to chat history
-      console.error(errorMessage);
-      return;
-    }
-
-    const userMessage = `You: ${inputValue}`;
-    setChatHistory((prevHistory) => [...prevHistory, userMessage]); // Add user message to chat history
+    // Add user message to the messages array
+    setMessages((prevMessages) => [...prevMessages, userMessage]);
 
     try {
-      const result = await axios.post('http://localhost:5000/chatbot', {
-        questionType, // Include question type in the request
-        inputValue, // Send the input value to the backend
-      });
+      // Send user input to backend API
+      const response = await axios.post('http://localhost:5000/chatbot', { inputValue: inputMessage });
+      const botResponse = {
+        text: response.data.message,
+        sender: 'bot',
+        timestamp: new Date().toLocaleTimeString()
+      };
 
-      const botMessage = `Bot: ${result.data.message}`; // Prepare bot message
-      setChatHistory((prevHistory) => [...prevHistory, userMessage, botMessage]); // Append both user and bot messages
+      // Add bot response to the messages array
+      setMessages((prevMessages) => [...prevMessages, botResponse]);
     } catch (error) {
-      console.error('Error sending question:', error);
-      const errorMessage = 'Sorry, something went wrong. Please try again.';
-      setChatHistory((prevHistory) => [...prevHistory, userMessage, `Bot: ${errorMessage}`]); // Log error in chat history
+      const errorMessage = {
+        text: "Sorry, there was an error getting the response.",
+        sender: 'bot',
+        timestamp: new Date().toLocaleTimeString()
+      };
+      setMessages((prevMessages) => [...prevMessages, errorMessage]);
     }
 
-    setInputValue(''); // Clear the input after submission
+    setInputMessage('');
   };
 
-  // Suggested questions to display
-  const suggestedQuestions = [
-    'Find by Name',
-    'Find by Category',
-    'Find by Description',
-    'General Inquiry'
-  ];
-
-  const handleSuggestionClick = (suggestion) => {
-    // Convert to a format that can be used in the backend without spaces
-    const formattedQuestionType = suggestion.toLowerCase().replace(/\s+/g, '_'); // Replace spaces with underscores
-    setQuestionType(formattedQuestionType); // Set the formatted question type
-    setInputValue(''); // Clear previous input
-  
-    // Update the placeholder text based on the selected suggestion
-    switch (suggestion) {
-      case 'Find by Category':
-        setPlaceholderText('Enter the category you want to search:');
-        break;
-      case 'Find by Name':
-        setPlaceholderText('Enter the name of the file you want to find:');
-        break;
-      case 'Find by Description':
-        setPlaceholderText('Enter the description of the file you are looking for:');
-        break;
-      default:
-        setPlaceholderText('What would you like to ask?');
-    }
-  };
-  
   return (
-    <div className="chatbot-container">
-      <h2>Chatbot</h2>
-      <div className="chat-window">
-        <div className="chat-history">
-          {chatHistory.map((msg, index) => (
-            <div key={index} className="chat-message">
-              {/* Render the message as HTML to support links */}
-              <span dangerouslySetInnerHTML={{ __html: msg }} />
-            </div>
-          ))}
-        </div>
-        <form onSubmit={handleSubmit} className="chat-input-form">
-          <input
-            type="text"
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            placeholder={placeholderText} // Use dynamic placeholder text
-            required
-          />
-          <button type="submit">Send</button>
-        </form>
-        <div className="suggestions">
-          <h4>Suggested Questions:</h4>
-          {suggestedQuestions.map((suggestion, index) => (
-            <button 
-              key={index} 
-              className="suggestion-button" 
-              onClick={() => handleSuggestionClick(suggestion)}
+    <div className="fixed bottom-4 right-4">
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="bg-blue-500 hover:bg-blue-600 text-white rounded-full p-3 shadow-lg"
+      >
+        <MessageSquare size={24} />
+      </button>
+
+      {isOpen && (
+        <div className="absolute bottom-16 right-0 w-80 h-96 bg-white rounded-lg shadow-xl flex flex-col">
+          <div className="bg-blue-500 text-white p-4 rounded-t-lg">
+            <h3 className="font-bold">Website Assistant</h3>
+          </div>
+
+          <div className="flex-1 overflow-y-auto p-4 space-y-4">
+            {messages.map((message, index) => (
+              <div
+                key={index}
+                className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
+              >
+                <div
+                  className={`max-w-[70%] rounded-lg p-3 ${
+                    message.sender === 'user'
+                      ? 'bg-blue-500 text-white'
+                      : 'bg-gray-100 text-gray-800'
+                  }`}
+                >
+                  <p className="text-sm">{message.text}</p>
+                  <span className="text-xs opacity-75">{message.timestamp}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="border-t p-4 flex gap-2">
+            <input
+              type="text"
+              value={inputMessage}
+              onChange={(e) => setInputMessage(e.target.value)}
+              onKeyPress={(e) => e.key === 'Enter' && handleSend()}
+              placeholder="Type your message..."
+              className="flex-1 border rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500"
+            />
+            <button
+              onClick={handleSend}
+              className="bg-blue-500 hover:bg-blue-600 text-white rounded-lg p-2"
             >
-              {suggestion}
+              <Send size={20} />
             </button>
-          ))}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };

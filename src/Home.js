@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './Home.css'; // Import your CSS file for styling
 import Navbar from './Navbar';
+import Chatbot from './Chatbot';
+const API_URL = "http://localhost:5000"; // Base API URL
 
 const Home = () => {
   const navigate = useNavigate();
@@ -13,7 +15,7 @@ const Home = () => {
   useEffect(() => {
     const fetchFiles = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/files");
+        const response = await axios.get(`${API_URL}/files`);
         setFiles(response.data); // Make sure this matches your API response
         console.log(response.data); // Log the response to check its structure
       } catch (err) {
@@ -28,7 +30,7 @@ const Home = () => {
 
   const handleLogout = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/logout", { withCredentials: true });
+      const res = await axios.get(`${API_URL}/logout`, { withCredentials: true });
       if (res.data.status) {
         navigate("/login");
       } else {
@@ -42,12 +44,12 @@ const Home = () => {
   const handleDelete = async (fileId) => {
     if (window.confirm("Are you sure you want to delete this file?")) {
       try {
-        await axios.get(`http://localhost:5000/filesdelete/${fileId}`, {
+        await axios.delete(`${API_URL}/filesdelete/${fileId}`, {
           withCredentials: true
         });
 
         // Remove the deleted file from the state
-        setFiles(files.filter((file) => file.id !== fileId)); // Ensure you are using `id`
+        setFiles(files.filter((file) => file.id !== fileId));
         console.log(`File ${fileId} deleted successfully`);
       } catch (err) {
         console.error("Error deleting file:", err);
@@ -80,6 +82,7 @@ const Home = () => {
           onChange={(e) => setSearchQuery(e.target.value)} // Update search query
           className="search-input"
         />
+       
       </div>
 
       <div className="files-container">
@@ -88,31 +91,33 @@ const Home = () => {
           <p>No files found.</p>
         ) : (
           <div className="files-grid">
-  {filteredFiles.map((file) => (
-    <div key={file.id} className="file-item"> {/* Use `id` here */}
-      
-      <img src={`http://localhost:5000${file.thumbnailUrl}`} className='thumbnail' alt={file.originalName} />
-      
-      <Link to={`/files/${file.id}`}>
-        {file.originalName}
-      </Link>
-      <br />
-      <p className='cd'>Description: {file.description || 'No description available'}</p>
-      <p className='cd'>Category: {file.category || 'No category assigned'}</p>
-      
-      {/* Display Average Rating and Total Ratings */}
-      <div className="rating-info">
-        <p className='or'>Average Rating: {file.averageRating} ⭐</p>
-        <p className='or'>Total Ratings: {file.totalRatings}</p>
-      </div>
+            {filteredFiles.map((file) => (
+              <div key={file.id} className="file-item">
+                <img 
+                  src={`${API_URL}${file.thumbnailUrl}`} 
+                  className='thumbnail' 
+                  alt={file.originalName} 
+                  onError={(e) => { e.target.src = '/path/to/default-thumbnail.jpg'; }} // Fallback image
+                />
+                <Link to={`/files/${file.id}`}>
+                  {file.originalName}
+                </Link>
+                <br />
+                <p className='cd'>Description: {file.description || 'No description available'}</p>
+                <p className='cd'>Category: {file.category || 'No category assigned'}</p>
+                
+                {/* Display Average Rating and Total Ratings */}
+                <div className="rating-info">
+                  <p className='or'>Average Rating: {file.averageRating || 'N/A'} ⭐</p>
+                  <p className='or'>Total Ratings: {file.totalRatings || 0}</p>
+                </div>
 
-      <button onClick={() => handleDelete(file.id)} className="delete-button">
-        Delete
-      </button>
-    </div>
-  ))}
-</div>
-
+                <button onClick={() => handleDelete(file.id)} className="delete-button" aria-label={`Delete ${file.originalName}`}>
+                  Delete
+                </button>
+              </div>
+            ))}
+          </div>
         )}
       </div>
     </div>

@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-
+import { addFileToDB } from './db'; 
 import Navbar from './Navbar';
 import StarRating from './StarRating';
+
 const FileDetails = () => {
     const { id } = useParams(); // Get the file ID from the URL
     const [file, setFile] = useState(null);
@@ -13,6 +14,7 @@ const FileDetails = () => {
     const [rating, setRating] = useState(0);
     const [comment, setComment] = useState("");
     const [collectionId, setCollectionId] = useState(""); // State to store collection ID
+    const [folders, setFolders] = useState([]); // State to store folders
 
     useEffect(() => {
         const fetchFileDetails = async () => {
@@ -47,7 +49,20 @@ const FileDetails = () => {
             }
         };
 
+        const fetchFolders = async () => {
+            try {
+                const response = await axios.get(`http://localhost:5000/folders`, {
+                    withCredentials: true
+                });
+                setFolders(response.data);
+            } catch (err) {
+                console.error("Error fetching folders:", err);
+                setError("Could not fetch folders. Please try again later.");
+            }
+        };
+
         fetchFileDetails();
+        fetchFolders();
     }, [id]);
 
     const handleRatingSubmit = async (e) => {
@@ -79,21 +94,38 @@ const FileDetails = () => {
             alert("Please select a collection ID."); // Simple validation
             return;
         }
-
+    
         try {
+            // First, add the file to the collection in the backend
             const response = await axios.post(`http://localhost:5000/folders/${collectionId}/add-file`, {
-                fileId: id
+                fileId: file._id // Ensure you're using the correct ID here
             }, {
                 withCredentials: true
             });
-
+    
             console.log(response.data);
             alert(response.data.message); // Show success message
+    
+            // Log the file object to check its properties
+            console.log("File object being processed:", file);
+    
+            // Now, save the file data offline
+            const fileData = { id: file._id, ...file }; // Use file._id instead of file.id
+            console.log("File data being saved to DB:", fileData); // Check structure
+    
+            // Ensure 'id' is defined
+            if (!fileData.id) {
+                throw new Error("File ID is undefined. Cannot save to DB.");
+            }
+    
+            await addFileToDB(fileData);
+    
         } catch (err) {
             console.error("Error adding file to collection:", err);
             setError("Failed to add file to collection. Please try again.");
         }
     };
+    
 
     if (loading) {
         return <div>Loading file details...</div>;
@@ -135,17 +167,13 @@ const FileDetails = () => {
                <div>
                <h3>Ratings:</h3>
                <ul>
-                 {file.ratings.length > 0 ? (
-                   file.ratings.map((rating, index) => (
+                 {file.ratings.map((rating, index) => (
                      <li key={index} style={styles.ratingItem}>
                        <strong>User:</strong> {users[rating.user] || "Unknown User"} - 
                        <strong>Rating:</strong> <StarRating rating={rating.rating} /> - 
                        <strong>Comment:</strong> {rating.comment || "No comments"}
                      </li>
-                   ))
-                 ) : (
-                   <li>No ratings yet.</li>
-                 )}
+                 ))}
                </ul>
              </div>
             ) : (
@@ -185,14 +213,19 @@ const FileDetails = () => {
             {/* Button to Add File to Collection */}
             <div style={{ marginTop: '20px' }}>
                 <label>
-                    Select Collection name to add:
-                    <input
-                        type="text"
+                    Select Collection:
+                    <select
                         value={collectionId}
                         onChange={(e) => setCollectionId(e.target.value)}
-                        placeholder="Enter Collection name"
                         required
-                    />
+                    >
+                        <option value="">Select a collection</option>
+                        {folders.map(folder => (
+                            <option key={folder._id} value={folder._id}>
+                                {folder.name} {/* Assuming folders have a `name` property */}
+                            </option>
+                        ))}
+                    </select>
                 </label>
                 <button onClick={handleAddFileToCollection}>Add File to Collection</button>
             </div>
@@ -202,6 +235,7 @@ const FileDetails = () => {
         </>
     );
 };
+
 const styles = {
     ratingItem: {
       marginBottom: '15px',
@@ -209,6 +243,6 @@ const styles = {
       border: '1px solid #ddd',
       borderRadius: '5px',
     },
-  };
+};
 
 export default FileDetails;
