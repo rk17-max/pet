@@ -14,17 +14,19 @@
 
 .modal-content {
     background: white;
+    border-radius: 8px;
     padding: 20px;
-    border-radius: 5px;
-    width: 300px; /* Adjust width as needed */
+    max-width: 500px;
+    width: 100%;
+    position: relative;
 }
 
 .close-button {
-    
-    border: none;
-    font-size: 20px;
     position: absolute;
     top: 10px;
     right: 10px;
+    border: none;
+    background: transparent;
+    font-size: 24px;
     cursor: pointer;
 }

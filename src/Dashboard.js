@@ -25,11 +25,11 @@ const Dashboard = () => {
                     setUsername(res.data.username);
                 } else {
                     // If user is not authenticated, redirect to home page
-                    navigate("/home");
+                    navigate("/login");
                 }
             } catch (err) {
                 console.log(err);
-                navigate("/home"); // Redirect to home on error as well
+                navigate("/login"); // Redirect to home on error as well
             }
         };
 
@@ -56,7 +56,7 @@ const Dashboard = () => {
             <h1 className="username">Welcome back, {username}!</h1> {/* Display username */}
             <br></br>
            
-            <UploadForm /> {/* Render the upload form */}
+            <UploadForm />
             <h2>Your Uploaded Files:</h2>
             <TransitionGroup className="file-list">
                 {uploadedFiles.map((file, index) => (

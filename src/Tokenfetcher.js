@@ -1,24 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 
-const TokenFetcher = () => {
-    const [token, setToken] = useState(null);
+const TokenDisplay = () => {
+    const [tokenValue, setTokenValue] = useState('');
 
     useEffect(() => {
-        const fetchedToken = Cookies.get('token'); // Access the token from cookies
-        if (fetchedToken) {
-            setToken(fetchedToken);
-        } else {
-            console.log('No token found');
-        }
+        // Get the "token" cookie when the component mounts
+        const value = Cookies.get('token');
+        setTokenValue(value || 'Token not found');
+        
+        // Log the token value to the console
+        console.log('Token is this:', value || 'Token not found');
     }, []);
 
     return (
         <div>
-            <h1>JWT Token from Cookies:</h1>
-            <p>{token ? token : 'No token found'}</p>
+            <h3>Token Value</h3>
+            <p><strong>Token:</strong> {tokenValue}</p>
         </div>
     );
 };
 
-export default TokenFetcher;
+export default TokenDisplay;

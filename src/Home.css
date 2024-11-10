@@ -1,104 +1,251 @@
-.files-container {
-  margin-top: 20px;
+/* Enhanced Home.css with modern styling and GSAP animations */
+:root {
+  --primary-color: #6366f1;
+  --secondary-color: #4f46e5;
+  --accent-color: #818cf8;
+  --background-color: #f8fafc;
+  --card-background: #ffffff;
+  --text-primary: #1e293b;
+  --text-secondary: #64748b;
+  --success-color: #22c55e;
+  --error-color: #ef4444;
+  --transition-smooth: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.files-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Minimum width of 200px for each item */
-  gap: 15px; /* Space between items */
-  padding: 10px; /* Optional padding around the grid */
-}
-.cd{
-  color: black;
-}
-.file-item {
-  border: 1px solid #ccc; /* Border for each square */
-  border-radius: 8px; /* Rounded corners */
-  padding: 15px; /* Inner padding */
-  text-align: center; /* Center text */
-  background-color: #f9f9f9; /* Light background color */
-  transition: transform 0.2s, box-shadow 0.2s; /* Smooth transition on hover */
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Light shadow for depth */
+.home-container {
+  position: relative;
+  min-height: 100vh;
+  background: var(--background-color);
+  overflow-x: hidden;
 }
 
-.file-item:hover {
-  transform: scale(1.05); /* Slightly enlarge on hover */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Deeper shadow on hover */
+/* Enhanced Menu Button */
+.menu-button {
+  position: fixed;
+  top: 90px;
+  left: 5px;
+  z-index: 1000;
+  cursor: pointer;
+  padding: 15px;
+  background: var(--card-background);
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
-.delete-button {
-  margin-top: 15px; /* Space above the delete button */
-  background-color: #ff4d4d; /* Red background for delete button */
-  color: white; /* White text color */
-  border: none; /* Remove default border */
-  border-radius: 5px; /* Rounded corners */
-  padding: 8px 12px; /* Padding for button */
-  cursor: pointer; /* Pointer cursor on hover */
-  font-size: 14px; /* Slightly larger font size */
-  transition: background-color 0.3s; /* Smooth transition for background color */
+.menu-button span {
+  display: block;
+  width: 28px;
+  height: 3px;
+  background-color: var(--primary-color);
+  margin: 6px 0;
+  transition: transform 0.4s var(--transition-smooth);
 }
 
-.delete-button:hover {
-  background-color: #ff1a1a; /* Darker red on hover */
+.menu-button.open span:nth-child(1) {
+  transform: rotate(45deg) translate(8px, 8px);
 }
 
+.menu-button.open span:nth-child(2) {
+  opacity: 0;
+  transform: translateX(-20px);
+}
 
+.menu-button.open span:nth-child(3) {
+  transform: rotate(-45deg) translate(7px, -7px);
+}
+
+/* Modern Sidebar */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: -300px;
+  height: 100vh;
+  width: 250px;
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  color: white;
+  padding: 20px;
+  transition: transform 0.4s var(--transition-smooth);
+  z-index: 999;
+  box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1);
+  
+}
+
+.sidebar.open {
+  top: 0px;
+  transform: translateX(300px);
+}
+
+.sidebar-header {
+  text-align: center;
+  padding: 30px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+ 
+}
+
+.profile-pic {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 3px solid var(--accent-color);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+  transition: transform 0.3s ease;
+}
+
+.profile-pic:hover {
+  transform: scale(1.05);
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  color: white;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  border-radius: 12px;
+  margin: 8px 0;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.nav-item:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateX(8px);
+}
+
+/* Enhanced Search Bar */
 .search-container {
-  margin: 20px 0;
+  max-width: 700px;
+  margin: 40px auto;
+  position: relative;
+  transition: transform 0.3s ease;
+}
+
+.search-container.focused {
+  transform: scale(1.02);
 }
 
 .search-input {
-  padding: 10px;
   width: 100%;
-  max-width: 400px; /* Set a max width for the input */
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 16px;
+  padding: 20px 60px;
+  border: none;
+  border-radius: 16px;
+  font-size: 1.1rem;
+  background: var(--card-background);
+  color: var(--text-primary);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
 }
 
-.files-container {
-  margin-top: 20px;
+.search-input:focus {
+  box-shadow: 0 8px 15px -3px rgba(99, 102, 241, 0.2);
+  outline: 2px solid var(--primary-color);
 }
 
+/* Modern File Cards */
 .files-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Responsive grid */
-  gap: 15px; /* Space between items */
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 30px;
+  padding: 30px;
+  padding-left: 50px;
 }
 
-.file-item {
-  border: 1px solid #ccc;
-  padding: 10px;
-  border-radius: 5px;
-  background-color: #f9f9f9;
-  transition: transform 0.2s;
+.file-card {
+  background: var(--card-background);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  transition: all 0.4s var(--transition-smooth);
+  transform-origin: center;
+  will-change: transform;
 }
 
-.file-item:hover {
-  transform: scale(1.05); /* Scale on hover for effect */
+.file-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+.file-thumbnail {
+  height: 200px;
+  overflow: hidden;
+  position: relative;
+}
+
+.file-thumbnail::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.2) 100%);
+}
+
+.file-thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.file-card:hover .file-thumbnail img {
+  transform: scale(1.1);
+}
+
+.file-info {
+  padding: 20px;
+}
+
+.file-name {
+  color: var(--text-primary);
+  font-size: 1.2rem;
+  font-weight: 600;
+  text-decoration: none;
+  display: block;
+  margin-bottom: 12px;
+  transition: color 0.3s ease;
+}
+
+.file-name:hover {
+  color: var(--primary-color);
+}
+.files-container{
+  padding-left: 90px;
+}
+.rating-stars {
+  color: #fbbf24;
+  font-size: 1.1rem;
 }
 
 .delete-button {
-  background-color: #ff4d4d;
+  background: var(--error-color);
   color: white;
   border: none;
-  padding: 5px 10px;
+  padding: 10px 20px;
+  border-radius: 8px;
   cursor: pointer;
-  border-radius: 5px;
+  transition: all 0.3s ease;
+  opacity: 0.9;
 }
 
 .delete-button:hover {
-  background-color: #ff1a1a; /* Darker red on hover */
-}
-.thumbnail {
-  width: 100px; /* Adjust size as needed */
-  height: auto;
-  margin-bottom: 10px;
+  opacity: 1;
+  transform: translateY(-2px);
 }
 
-.t{
-  color: black;
+/* Loading Animation */
+@keyframes shimmer {
+  0% {
+    background-position: -468px 0;
+  }
+  100% {
+    background-position: 468px 0;
+  }
 }
-.or{
-  color: black;
+
+.loading-skeleton {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 4px;
 }

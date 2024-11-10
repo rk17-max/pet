@@ -146,7 +146,7 @@ export default function Login() {
 
             <form onSubmit={handleSubmit}>
                 <img src={img} alt="logo" className="logo" />
-                <h1>😊Welcome to SolveBuddy</h1>
+                <h3>😊Welcome to SolveBuddy</h3>
                 <input type="email" placeholder="demo@gmail.com" value={email} onChange={handleEmailChange} required />
                 <input type="password" placeholder="password" value={password} onChange={handlePasswordChange} required />
                 <button type="submit">Login</button>
